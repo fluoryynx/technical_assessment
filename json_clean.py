@@ -95,6 +95,7 @@ def test_valid_search_payload():
         "q": "refund policy",
         "k": 2
     }
+    print("test_valid_search_payload passed")
 
 
 def test_valid_search_with_string_k():
@@ -108,6 +109,7 @@ def test_valid_search_with_string_k():
 
     assert errors == []
     assert clean["k"] == 4
+    print("test_valid_search_with_string_k passed")
 
 
 def test_trim_strings():
@@ -125,6 +127,7 @@ def test_trim_strings():
         "q": "refund policy",
         "k": 3
     }
+    print("test_trim_strings passed")
 
 
 def test_default_k_value():
@@ -137,6 +140,7 @@ def test_default_k_value():
 
     assert errors == []
     assert clean["k"] == 3
+    print("test_default_k_value passed")
 
 
 def test_ignore_unknown_fields():
@@ -149,6 +153,7 @@ def test_ignore_unknown_fields():
     clean, errors = validate_tool_call(payload)
 
     assert "extra" not in clean
+    print("test_ignore_unknown_fields passed")
 
 
 def test_answer_action_ignores_q():
@@ -161,7 +166,7 @@ def test_answer_action_ignores_q():
 
     assert clean["action"] == "answer"
     assert "q" not in clean
-
+    print("test_answer_action_ignores_q passed")
 
 
 # Fatal errors
@@ -175,6 +180,7 @@ def test_missing_action():
 
     assert clean == {}
     assert len(errors) > 0
+    print("test_missing_action passed")
 
 
 def test_invalid_action():
@@ -187,6 +193,7 @@ def test_invalid_action():
 
     assert clean == {}
     assert len(errors) > 0
+    print("test_invalid_action passed")
 
 
 def test_search_missing_q():
@@ -198,6 +205,7 @@ def test_search_missing_q():
 
     assert clean == {}
     assert len(errors) > 0
+    print("test_search_missing_q passed")
 
 
 def test_search_empty_q():
@@ -210,7 +218,7 @@ def test_search_empty_q():
 
     assert clean == {}
     assert len(errors) > 0
-
+    print("test_search_empty_q passed")
 
 
 # Non-fatal k errors
@@ -225,6 +233,7 @@ def test_k_out_of_range():
 
     assert clean["k"] == 3
     assert len(errors) == 1
+    print("test_k_out_of_range passed")
 
 
 def test_k_invalid_string():
@@ -238,6 +247,7 @@ def test_k_invalid_string():
 
     assert clean["k"] == 3
     assert len(errors) == 1
+    print("test_k_invalid_string passed")
 
 
 def test_k_bool_invalid():
@@ -251,9 +261,11 @@ def test_k_bool_invalid():
 
     assert clean["k"] == 3
     assert len(errors) == 1
+    print("test_k_bool_invalid passed")
 
 
 # Mixed: non-fatal k error + fatal q error
+
 
 def test_bool_k_and_missing_q():
     """
@@ -267,9 +279,11 @@ def test_bool_k_and_missing_q():
     assert any("bool" in e.lower() or "'k'" in e for e in errors)   # k error present
     assert any("'q'" in e for e in errors)                           # q error present
     assert len(errors) == 2
+    print("test_bool_k_and_missing_q passed")
 
 
 # edge cases
+
 
 def test_non_dict_payload():
     """Payload is not a dict at all."""
@@ -277,6 +291,7 @@ def test_non_dict_payload():
 
     assert clean == {}
     assert len(errors) > 0
+    print("test_non_dict_payload passed")
 
 
 def test_action_is_none_explicitly():
@@ -286,6 +301,7 @@ def test_action_is_none_explicitly():
 
     assert clean == {}
     assert len(errors) > 0
+    print("test_action_is_none_explicitly passed")
 
 
 def test_action_is_integer():
@@ -295,6 +311,7 @@ def test_action_is_integer():
 
     assert clean == {}
     assert len(errors) > 0
+    print("test_action_is_integer passed")
 
 
 def test_action_case_sensitive():
@@ -304,6 +321,7 @@ def test_action_case_sensitive():
 
     assert clean == {}
     assert len(errors) > 0
+    print("test_action_case_sensitive passed")
 
 
 def test_q_is_only_whitespace_multiline():
@@ -313,6 +331,7 @@ def test_q_is_only_whitespace_multiline():
 
     assert clean == {}
     assert len(errors) > 0
+    print("test_q_is_only_whitespace_multiline passed")
 
 
 def test_k_as_float_whole_number():
@@ -323,6 +342,7 @@ def test_k_as_float_whole_number():
     assert errors == []
     assert clean["k"] == 3
     assert isinstance(clean["k"], int)
+    print("test_k_as_float_whole_number passed")
 
 
 def test_k_as_float_fractional():
@@ -332,6 +352,7 @@ def test_k_as_float_fractional():
 
     assert clean["k"] == 3
     assert len(errors) == 1
+    print("test_k_as_float_fractional passed")
 
 
 def test_k_as_false_bool():
@@ -341,6 +362,7 @@ def test_k_as_false_bool():
 
     assert clean["k"] == 3
     assert len(errors) == 1
+    print("test_k_as_false_bool passed")
 
 
 def test_k_boundary_values():
@@ -349,6 +371,7 @@ def test_k_boundary_values():
         clean, errors = validate_tool_call({"action": "search", "q": "test", "k": boundary})
         assert errors == []
         assert clean["k"] == boundary
+    print("test_k_boundary_values passed")
 
 
 def test_empty_payload():
@@ -357,6 +380,7 @@ def test_empty_payload():
 
     assert clean == {}
     assert len(errors) > 0
+    print("test_empty_payload passed")
 
 
 def test_answer_with_no_fields_beyond_action():
@@ -366,6 +390,7 @@ def test_answer_with_no_fields_beyond_action():
     assert errors == []
     assert clean == {"action": "answer", "k": 3}
     assert "q" not in clean
+    print("test_answer_with_no_fields_beyond_action passed")
 
 
 test_valid_search_payload()
